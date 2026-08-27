@@ -1,184 +1,956 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* =========================================================
+   CreditPulse - FINAL App.css
+   Restored dashboard/auth layout + transaction form styling
+   ========================================================= */
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+* {
+  box-sizing: border-box;
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
-}
-
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
-}
-
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+  margin: 0;
   padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+body {
+  background: #0b1020;
+  color: #f4f7ff;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.creditpulse-app {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  border-left: none;
+  border-right: none;
+  background:
+    radial-gradient(circle at 0% 20%, rgba(30, 83, 190, 0.18), transparent 32%),
+    radial-gradient(circle at 100% 82%, rgba(0, 180, 170, 0.10), transparent 28%),
+    linear-gradient(135deg, #0d1730 0%, #080e1c 52%, #07131d 100%);
+}
+
+/* =========================
+   NAVBAR
+   ========================= */
+
+.navbar {
+  min-height: 80px;
+  padding: 0 88px;
   display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(8, 14, 29, 0.78);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #f7f9ff;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.logo span {
+  font-size: 25px;
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navbar button {
+  border: 0;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: #eaf0ff;
+  background: transparent;
+  font-weight: 600;
+}
+
+.navbar button.active {
+  background: #2867e8;
+  box-shadow: 0 7px 18px rgba(40, 103, 232, 0.25);
+}
+
+.navbar > button.active {
+  background: #777;
+}
+
+/* =========================
+   AUTH PAGE
+   ========================= */
+
+.auth-container {
+  min-height: calc(100vh - 80px);
+  padding: 70px 54px 55px;
+  display: grid;
+  grid-template-columns: 1.25fr 0.85fr;
+  gap: 65px;
+  align-items: center;
+}
+
+.intro {
+  padding: 10px 20px;
+}
+
+.badge {
+  width: fit-content;
+  margin: 0 auto 55px;
+  padding: 13px 18px;
+  border-radius: 25px;
+  color: #5ea1ff;
+  background: rgba(31, 91, 211, 0.20);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.intro h1 {
+  max-width: 700px;
+  margin: 0 auto 24px;
+  text-align: center;
+  font-size: clamp(42px, 5vw, 62px);
+  line-height: 1.08;
+  letter-spacing: -2px;
+}
+
+.intro h1 span {
+  color: #5d9eff;
+}
+
+.description {
+  max-width: 650px;
+  margin: 0 auto;
+  color: #9eb1d1;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.features {
+  display: grid;
+  gap: 18px;
+  margin-top: 42px;
+}
+
+.features > div {
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  background: rgba(25, 34, 55, 0.62);
+  text-align: center;
+}
+
+.features strong {
+  display: block;
+  font-size: 19px;
+}
+
+.features small {
+  display: block;
+  margin-top: 13px;
+  color: #91a5c8;
+  font-size: 15px;
+}
+
+.auth-card {
+  width: min(100%, 470px);
+  margin: 0 auto;
+  padding: 40px 38px;
+  border: 1px solid rgba(102, 132, 185, 0.28);
+  border-radius: 18px;
+  background: rgba(17, 27, 49, 0.82);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.auth-card h2 {
+  margin: 0 0 10px;
+  font-size: 29px;
+}
+
+.card-subtitle {
+  margin: 0 0 32px;
+  color: #9db1d2;
+  line-height: 1.5;
+  font-size: 17px;
+}
+
+.auth-card form {
+  text-align: left;
+}
+
+.auth-card label {
+  display: block;
+  margin: 0 0 10px;
+  color: #dbe5f8;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.auth-card input {
+  width: 100%;
+  height: 48px;
+  margin: 0 0 24px;
+  padding: 0 14px;
+  border: 1px solid #344663;
+  border-radius: 9px;
+  outline: none;
+  background: #111b2e;
+  color: #f4f7ff;
+}
+
+.auth-card input::placeholder {
+  color: #6f7e99;
+}
+
+.auth-card input:focus {
+  border-color: #4f8cff;
+  box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.12);
+}
+
+.submit-btn {
+  width: 100%;
+  min-height: 48px;
+  border: 0;
+  border-radius: 8px;
+  background: #2867e8;
+  color: white;
+  font-weight: 700;
+  transition: 0.2s ease;
+}
+
+.submit-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.forgot-password {
+  margin: -10px 0 20px;
+  text-align: right;
+}
+
+.forgot-password button,
+.switch-text button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #5da0ff;
+  font-weight: 600;
+}
+
+.switch-text {
+  margin: 25px 0 0;
+  color: #91a5c8;
+  font-size: 14px;
+}
+
+.form-message {
+  margin: 10px 0;
+  color: #f4f7ff;
+  font-size: 15px;
+  text-align: center;
+}
+
+/* =========================
+   DASHBOARD
+   ========================= */
+
+.dashboard {
+  width: 100%;
+  max-width: none;
+  padding: 24px 54px 35px;
+}
+
+.dashboard-header {
+  text-align: center;
+}
+
+.dashboard-header .badge {
+  margin: 0 auto 44px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: clamp(43px, 5vw, 62px);
+  line-height: 1.12;
+  letter-spacing: -2px;
+}
+
+.dashboard-header h1 span {
+  color: #f4f7ff;
+}
+
+.dashboard-header .description {
+  margin-top: 18px;
+  font-size: 16px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 900px;
+  margin: 42px auto 0;
+}
+
+.dashboard-card {
+  text-align: center;
+  padding: 8px 10px;
+  background: transparent;
+}
+
+.card-icon {
+  margin-bottom: 8px;
+  font-size: 25px;
+}
+
+.dashboard-card h3 {
+  margin: 0 0 16px;
+  font-size: 20px;
+}
+
+.dashboard-card p {
+  margin: 10px 0 0;
+  color: #9db0d1;
+  font-size: 15px;
+}
+
+.score {
+  display: block;
+  font-size: 18px;
+  color: #dce7fb;
+}
+
+.dashboard-welcome {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.dashboard-welcome h2 {
+  margin: 0 0 10px;
+  font-size: 21px;
+}
+
+.dashboard-welcome > p {
+  margin: 0 auto;
+  max-width: 1000px;
+  color: #dce5f6;
+  line-height: 1.5;
+}
+
+.dashboard-welcome .submit-btn {
+  width: auto;
+  margin-top: 12px;
+  padding: 0 18px;
+}
+
+footer {
+  padding: 24px;
+  color: #7588a9;
+  text-align: center;
+  font-size: 12px;
+}
+
+/* =========================
+   TRANSACTION FORM
+   ========================= */
+
+.transaction-form {
+  position: relative;
+  width: min(100%, 620px);
+  margin: 28px auto 0;
+  padding: 22px;
+  box-sizing: border-box;
+  text-align: left;
+  border: 1px solid rgba(85, 132, 255, 0.35);
+  border-radius: 16px;
+  background: rgba(17, 27, 49, 0.86);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.transaction-form-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.transaction-header-icon,
+.transaction-wallet-icon {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transaction-header-icon {
+  font-size: 25px;
+  color: #fff;
+  background: linear-gradient(135deg, #2874ff, #7044e8);
+  box-shadow: 0 8px 20px rgba(52, 98, 255, 0.24);
+}
+
+.transaction-wallet-icon {
+  margin-left: auto;
+  font-size: 22px;
+  background: rgba(72, 101, 255, 0.12);
+  border: 1px solid rgba(92, 130, 255, 0.22);
+}
+
+.transaction-form-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #f4f7ff;
+}
+
+.transaction-form-header p {
+  margin: 4px 0 0;
+  color: #9fb0d0;
+  font-size: 13px;
+}
+
+.transaction-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.transaction-field:focus-within {
+  border-color: rgba(83, 132, 255, 0.55);
+  background: rgba(50, 73, 118, 0.12);
+}
+
+.field-icon {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.type-icon {
+  color: #73b8ff;
+  background: rgba(62, 126, 255, 0.15);
+}
+
+.amount-icon {
+  color: #45dc91;
+  background: rgba(43, 201, 119, 0.13);
+}
+
+.category-icon {
+  color: #ffc247;
+  background: rgba(255, 180, 40, 0.13);
+}
+
+.description-icon {
+  color: #64a5ff;
+  background: rgba(68, 129, 255, 0.13);
+}
+
+.date-icon {
+  color: #b779ff;
+  background: rgba(139, 72, 255, 0.14);
+}
+
+.field-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.field-content label {
+  display: block;
+  margin: 0 0 6px;
+  color: #f4f7ff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.field-content input,
+.field-content select {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 11px;
+  box-sizing: border-box;
+  border: 1px solid #334462;
+  border-radius: 8px;
+  background: #101a2d;
+  color: #f4f7ff;
+  font: inherit;
+  outline: none;
+}
+
+.field-content input::placeholder {
+  color: #71809b;
+}
+
+.field-content input:focus,
+.field-content select:focus {
+  border-color: #4f8cff;
+  box-shadow: 0 0 0 3px rgba(61, 121, 255, 0.1);
+}
+
+.field-content small {
+  display: block;
+  margin-top: 5px;
+  color: #8492ad;
+  font-size: 11px;
+}
+
+.transaction-submit-btn {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 5px;
+  border: 0;
+  border-radius: 9px;
+  color: #fff;
+  background: linear-gradient(90deg, #216bff, #7044e8);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(66, 82, 255, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.transaction-submit-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 13px 28px rgba(66, 82, 255, 0.3);
+}
+
+.transaction-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.transaction-security {
+  margin: 12px 0 0;
+  text-align: center;
+  color: #8f9ab0;
+  font-size: 11px;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+  .navbar {
+    padding: 0 30px;
+  }
+
+  .auth-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .intro {
+    padding: 0;
+  }
+
+  .auth-card {
+    width: min(100%, 500px);
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}
+
+@media (max-width: 700px) {
+  .navbar {
+    min-height: 70px;
+    padding: 0 18px;
+  }
 
   .logo {
-    height: 18px;
+    font-size: 21px;
   }
 
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
+  .nav-buttons {
     gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
   }
 
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
+  .auth-container {
+    padding: 45px 18px;
+  }
 
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
+  .intro h1,
+  .dashboard-header h1 {
+    font-size: 38px;
+    letter-spacing: -1px;
+  }
 
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
+  .badge {
+    margin-bottom: 30px;
+  }
+
+  .auth-card {
+    padding: 30px 22px;
+  }
+
+  .dashboard {
+    padding: 25px 18px;
+  }
+
+  .transaction-form {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .transaction-field {
+    gap: 9px;
+    padding: 10px;
+  }
+
+  .field-icon {
+    flex-basis: 36px;
+    width: 36px;
+    height: 36px;
+    font-size: 17px;
+  }
+
+  .transaction-form-header h3 {
+    font-size: 18px;
+  }
+
+  .transaction-wallet-icon {
+    display: none;
   }
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
+/* =========================================================
+   CreditPulse - PREMIUM CREDIT SCORE CARD ONLY
+   Does NOT change navbar, dashboard layout, profile,
+   transactions card, welcome section, or transaction form.
+   ========================================================= */
 
-.ticks {
+/* Existing dashboard: Credit Score is the 2nd card */
+.dashboard-grid .dashboard-card:nth-child(2) {
   position: relative;
+  padding: 22px 18px;
+  border: 1px solid rgba(82, 133, 255, 0.30);
+  border-radius: 18px;
+  background:
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(82, 120, 255, 0.16),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(20, 35, 68, 0.78),
+      rgba(10, 20, 40, 0.72)
+    );
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  overflow: hidden;
+}
+
+.dashboard-grid .dashboard-card:nth-child(2)::before {
+  content: "";
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  right: -55px;
+  top: -55px;
+  border-radius: 50%;
+  background: rgba(72, 121, 255, 0.12);
+  pointer-events: none;
+}
+
+.dashboard-grid .dashboard-card:nth-child(2) .card-icon {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #2874ff, #7044e8);
+  box-shadow: 0 9px 24px rgba(52, 98, 255, 0.24);
+}
+
+.dashboard-grid .dashboard-card:nth-child(2) h3 {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 10px;
+  font-size: 21px;
+}
+
+.dashboard-grid .dashboard-card:nth-child(2) .score {
+  position: relative;
+  z-index: 1;
+  display: block;
+  font-size: 42px;
+  line-height: 1;
+  font-weight: 800;
+  background: linear-gradient(90deg, #f4f7ff, #72a8ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dashboard-grid .dashboard-card:nth-child(2) .score::after {
+  content: " / 850";
+  color: #7183a3;
+  font-size: 13px;
+  font-weight: 600;
+  background: none;
+  -webkit-text-fill-color: #7183a3;
+}
+
+.dashboard-grid .dashboard-card:nth-child(2) p {
+  position: relative;
+  z-index: 1;
+  margin-top: 12px;
+  color: #72a7ff;
+  font-weight: 700;
+}
+
+/* If the newer Credit Score JSX is being used */
+.credit-score-card {
+  position: relative;
+  overflow: hidden;
+  padding: 22px 18px;
+  border: 1px solid rgba(82, 133, 255, 0.30);
+  border-radius: 18px;
+  background:
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(82, 120, 255, 0.16),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(20, 35, 68, 0.78),
+      rgba(10, 20, 40, 0.72)
+    );
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+.credit-score-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.credit-score-top .card-icon {
+  margin: 0;
+}
+
+.score-label {
+  color: #6ea2ff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.credit-score-card h3 {
+  margin: 11px 0 5px;
+}
+
+.score-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+}
+
+.score-display strong {
+  font-size: 42px;
+  line-height: 1;
+  font-weight: 800;
+  background: linear-gradient(90deg, #f4f7ff, #72a8ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.score-display span {
+  color: #7183a3;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.score-bar {
   width: 100%;
+  height: 7px;
+  margin: 15px 0 9px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
+.score-bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #246bff, #7b5cff, #45dc91);
+  transition: width 0.7s ease;
+}
+
+.score-status {
+  color: #72a7ff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.score-description {
+  margin: 5px 0 14px;
+  color: #8291ad;
+  font-size: 12px;
+}
+
+.financial-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.financial-mini-grid div {
+  padding: 9px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.financial-mini-grid span {
+  display: block;
+  margin-bottom: 4px;
+  color: #7788a4;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.financial-mini-grid strong {
+  display: block;
+  color: #eef4ff;
+  font-size: 11px;
+  word-break: break-word;
+}
+
+@media (max-width: 700px) {
+  .dashboard-grid .dashboard-card:nth-child(2) {
+    padding: 18px 14px;
   }
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
+  .dashboard-grid .dashboard-card:nth-child(2) .score {
+    font-size: 36px;
   }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+
+  .financial-mini-grid {
+    grid-template-columns: 1fr;
   }
+
+  .score-display strong {
+    font-size: 36px;
+  }
+}
+/* =========================================================
+   CREDITPULSE - PREMIUM RECENT TRANSACTIONS
+   ========================================================= */
+
+.dashboard-welcome[style*="marginTop"] {
+  margin-top: 30px !important;
+}
+
+.dashboard-welcome[style*="marginTop"] > div {
+  gap: 12px !important;
+}
+
+.dashboard-welcome[style*="marginTop"] > div > div {
+  position: relative;
+  padding: 18px 20px !important;
+  border: 1px solid rgba(85, 132, 255, 0.22) !important;
+  border-radius: 15px !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(25, 38, 67, 0.92),
+      rgba(14, 24, 44, 0.96)
+    ) !important;
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dashboard-welcome[style*="marginTop"] > div > div:hover {
+  transform: translateY(-2px);
+  border-color: rgba(83, 132, 255, 0.48) !important;
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.24),
+    0 0 20px rgba(52, 100, 255, 0.08);
+}
+
+.dashboard-welcome[style*="marginTop"] > div > div strong:first-child {
+  display: block;
+  color: #f4f7ff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.dashboard-welcome[style*="marginTop"] > div > div p {
+  color: #8fa0bf !important;
+  font-size: 13px;
+}
+
+.dashboard-welcome[style*="marginTop"] > div > div > strong:last-child {
+  color: #45dc91;
+  font-size: 17px;
+  white-space: nowrap;
 }
