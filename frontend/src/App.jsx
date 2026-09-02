@@ -33,7 +33,27 @@ function App() {
     date: new Date().toISOString().split("T")[0],
   });
   const [transactions, setTransactions] = useState([]);
+  const [transactionSearch, setTransactionSearch] = useState("");
+    const [transactionTypeFilter, setTransactionTypeFilter] = useState("all");
+    const [transactionCategoryFilter, setTransactionCategoryFilter] = useState("all");
   const [transactionLoading, setTransactionLoading] = useState(false);
+    const filteredTransactions = transactions.filter((transaction) => {
+    const searchText = transactionSearch.toLowerCase();
+
+    const matchesSearch =
+        transaction.category?.toLowerCase().includes(searchText) ||
+        transaction.description?.toLowerCase().includes(searchText);
+
+    const matchesType =
+        transactionTypeFilter === "all" ||
+        transaction.type === transactionTypeFilter;
+
+    const matchesCategory =
+        transactionCategoryFilter === "all" ||
+        transaction.category === transactionCategoryFilter;
+
+    return matchesSearch && matchesType && matchesCategory;
+});
   const [editingTransactionId, setEditingTransactionId] = useState(null);
 
   // =========================
@@ -53,7 +73,16 @@ function App() {
     totalExpense: 0,
     balance: 0,
     savingsRate: 0,
-  });
+
+    // Advanced analytics
+    averageMonthlyIncome: 0,
+    averageMonthlyExpense: 0,
+    highestSpendingCategory: null,
+    highestSpendingAmount: 0,
+
+    expenseByCategory: {},
+    monthlyData: {},
+});
 
   const transactionCategories = [
     "Salary", "Food", "Shopping", "Travel", "Bills",
@@ -605,6 +634,32 @@ function App() {
     setShowAddTransaction(true);
     setMessage("");
 
+      // =========================
+// TRANSACTION FILTERING
+// =========================
+const filteredTransactions = transactions.filter((transaction) => {
+    const search = transactionSearch.toLowerCase().trim();
+
+    const matchesSearch =
+        !search ||
+        transaction.category?.toLowerCase().includes(search) ||
+        transaction.description?.toLowerCase().includes(search);
+
+    const matchesType =
+        transactionTypeFilter === "all" ||
+        transaction.type === transactionTypeFilter;
+
+    const matchesCategory =
+        transactionCategoryFilter === "all" ||
+        transaction.category === transactionCategoryFilter;
+
+    return (
+        matchesSearch &&
+        matchesType &&
+        matchesCategory
+    );
+});
+
     // Scroll directly to the Edit Transaction form
     setTimeout(() => {
       document
@@ -854,22 +909,65 @@ function App() {
               </strong>
             </div>
 
-            <div
-              style={{
-                padding: "20px",
-                borderRadius: "16px",
-                border: "1px solid rgba(255,255,255,0.12)",
-                background: "rgba(20, 35, 65, 0.65)",
-              }}
-            >
-              <div style={{ fontSize: "28px" }}>📈</div>
-              <p style={{ margin: "10px 0 4px", opacity: 0.75 }}>
-                Savings Rate
-              </p>
-              <strong style={{ fontSize: "24px" }}>
-                {analytics.savingsRate}%
-              </strong>
-            </div>
+           <div
+  style={{
+    padding: "20px",
+    borderRadius: "16px",
+    border: "1px solid rgba(255,255,255,0.12)",
+    background: "rgba(20, 35, 65, 0.65)",
+  }}
+>
+  <div style={{ fontSize: "28px" }}>📊</div>
+  <p style={{ margin: "10px 0 4px", opacity: 0.75 }}>
+    Avg. Monthly Income
+  </p>
+  <strong style={{ fontSize: "24px" }}>
+    ₹{Number(
+      analytics.averageMonthlyIncome || 0
+    ).toLocaleString("en-IN")}
+  </strong>
+</div>
+
+<div
+  style={{
+    padding: "20px",
+    borderRadius: "16px",
+    border: "1px solid rgba(255,255,255,0.12)",
+    background: "rgba(20, 35, 65, 0.65)",
+  }}
+>
+  <div style={{ fontSize: "28px" }}>💸</div>
+  <p style={{ margin: "10px 0 4px", opacity: 0.75 }}>
+    Avg. Monthly Expense
+  </p>
+  <strong style={{ fontSize: "24px" }}>
+    ₹{Number(
+      analytics.averageMonthlyExpense || 0
+    ).toLocaleString("en-IN")}
+  </strong>
+</div>
+
+<div
+  style={{
+    padding: "20px",
+    borderRadius: "16px",
+    border: "1px solid rgba(255,255,255,0.12)",
+    background: "rgba(20, 35, 65, 0.65)",
+  }}
+>
+  <div style={{ fontSize: "28px" }}>🏆</div>
+  <p style={{ margin: "10px 0 4px", opacity: 0.75 }}>
+    Top Spending Category
+  </p>
+  <strong style={{ fontSize: "22px" }}>
+    {analytics.highestSpendingCategory || "No Data"}
+  </strong>
+  <div style={{ marginTop: "6px", opacity: 0.7 }}>
+    ₹{Number(
+      analytics.highestSpendingAmount || 0
+    ).toLocaleString("en-IN")}
+  </div>
+</div>
           </section>
 
           {/* =========================
@@ -1521,6 +1619,57 @@ function App() {
               className="dashboard-welcome"
               style={{ marginTop: "24px" }}
             >
+              <div className="transaction-filters">
+
+    <input
+        type="text"
+        placeholder="Search transactions..."
+        value={transactionSearch}
+        onChange={(e) => setTransactionSearch(e.target.value)}
+    />
+
+    <select
+        value={transactionTypeFilter}
+        onChange={(e) => setTransactionTypeFilter(e.target.value)}
+    >
+        <option value="all">All Types</option>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+    </select>
+
+    <select
+        value={transactionCategoryFilter}
+        onChange={(e) =>
+            setTransactionCategoryFilter(e.target.value)
+        }
+    >
+        <option value="all">All Categories</option>
+
+      <option value="Salary">Salary</option>
+<option value="Food">Food</option>
+<option value="Shopping">Shopping</option>
+<option value="Travel">Travel</option>
+<option value="Bills">Bills</option>
+<option value="Rent">Rent</option>
+<option value="Education">Education</option>
+<option value="Healthcare">Healthcare</option>
+<option value="Entertainment">Entertainment</option>
+<option value="Other">Other</option>
+       </select>
+
+    <button
+        type="button"
+        className="clear-filters-btn"
+        onClick={() => {
+            setTransactionSearch("");
+            setTransactionTypeFilter("all");
+            setTransactionCategoryFilter("all");
+        }}
+    >
+        Clear Filters
+    </button>
+
+</div>
               <h2>Recent Transactions</h2>
 
               <div
@@ -1530,7 +1679,19 @@ function App() {
                   marginTop: "20px",
                 }}
               >
-                {transactions.map((transaction) => (
+                {filteredTransactions.length === 0 && (
+    <div className="no-transactions-found">
+        <div className="no-transactions-icon">🔍</div>
+        <h3>No transactions found</h3>
+        <p>Try changing your search or filters.</p>
+    </div>
+)}
+    {filteredTransactions.length > 0 && (
+    <div className="transaction-result-count">
+        Showing {filteredTransactions.length} of {transactions.length} transactions
+    </div>
+)}
+                {filteredTransactions.map((transaction) => (
                   <div
                     key={transaction._id}
                     style={{

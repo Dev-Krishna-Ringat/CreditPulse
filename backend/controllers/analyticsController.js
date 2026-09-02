@@ -62,6 +62,38 @@ const getAnalytics = async (req, res) => {
 
         const balance = totalIncome - totalExpense;
 
+        // =========================
+        // ADVANCED ANALYTICS
+        // =========================
+
+        const monthsCount = Object.keys(monthlyData).length;
+
+        const averageMonthlyIncome =
+            monthsCount > 0
+                ? totalIncome / monthsCount
+                : 0;
+
+        const averageMonthlyExpense =
+            monthsCount > 0
+                ? totalExpense / monthsCount
+                : 0;
+
+        // Highest spending category
+        let highestSpendingCategory = null;
+        let highestSpendingAmount = 0;
+
+        Object.entries(expenseByCategory).forEach(
+            ([category, amount]) => {
+
+                if (amount > highestSpendingAmount) {
+                    highestSpendingCategory = category;
+                    highestSpendingAmount = amount;
+                }
+
+            }
+        );
+
+        // Savings rate
         let savingsRate = 0;
 
         if (totalIncome > 0) {
@@ -77,6 +109,18 @@ const getAnalytics = async (req, res) => {
             totalExpense,
 
             balance,
+
+            averageMonthlyIncome: Number(
+                averageMonthlyIncome.toFixed(2)
+            ),
+
+            averageMonthlyExpense: Number(
+                averageMonthlyExpense.toFixed(2)
+            ),
+
+            highestSpendingCategory,
+
+            highestSpendingAmount,
 
             savingsRate: Number(
                 savingsRate.toFixed(2)

@@ -897,6 +897,141 @@ footer {
     font-size: 36px;
   }
 }
+  /* =========================
+   TRANSACTION FILTERS
+   /* =========================
+   NO TRANSACTIONS FOUND
+   ========================= */
+
+.no-transactions-found {
+    text-align: center;
+    margin: 20px auto;
+    padding: 35px 20px;
+    max-width: 600px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.no-transactions-icon {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.no-transactions-found h3 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    color: #f8fafc;
+}
+
+.no-transactions-found p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 14px;
+}
+  
+
+.transaction-filters {
+    display: flex;
+    gap: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    margin: 22px auto 18px;
+    padding: 16px;
+    max-width: 1100px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.035);
+    backdrop-filter: blur(10px);
+}
+
+.transaction-filters input,
+.transaction-filters select {
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    background: #111827;
+    color: #f8fafc;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+.transaction-filters input {
+    width: 280px;
+    flex-shrink: 0;
+}
+
+.transaction-filters select {
+    min-width: 170px;
+    width: 190px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.transaction-filters input::placeholder {
+    color: #94a3b8;
+}
+
+.transaction-filters input:focus,
+.transaction-filters select:focus {
+
+    border-color: #3b82f6;
+
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+
+}
+
+.transaction-filters select option {
+
+    background: #111827;
+
+    color: #f8fafc;
+
+}
+
+/* Clear Filters Button */
+.clear-filters-btn {
+    height: 44px;
+    padding: 0 18px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #f8fafc;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.clear-filters-btn:hover {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.5);
+    transform: translateY(-1px);
+}
+
+.clear-filters-btn:active {
+    transform: translateY(0);
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+    .transaction-filters {
+        flex-direction: column;
+        align-items: stretch;
+        margin: 18px 12px;
+    }
+
+    .transaction-filters input,
+    .transaction-filters select {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+}
 /* =========================================================
    CREDITPULSE - PREMIUM RECENT TRANSACTIONS
    ========================================================= */
