@@ -32,11 +32,12 @@ function App() {
     description: "",
     date: new Date().toISOString().split("T")[0],
   });
-  const [transactions, setTransactions] = useState([]);
-  const [transactionSearch, setTransactionSearch] = useState("");
+    const [transactions, setTransactions] = useState([]);
+    const [transactionSearch, setTransactionSearch] = useState("");
     const [transactionTypeFilter, setTransactionTypeFilter] = useState("all");
     const [transactionCategoryFilter, setTransactionCategoryFilter] = useState("all");
-  const [transactionLoading, setTransactionLoading] = useState(false);
+    const [transactionSort, setTransactionSort] = useState("newest");
+    const [transactionLoading, setTransactionLoading] = useState(false);
     const filteredTransactions = transactions.filter((transaction) => {
     const searchText = transactionSearch.toLowerCase();
 
@@ -637,28 +638,48 @@ function App() {
       // =========================
 // TRANSACTION FILTERING
 // =========================
-const filteredTransactions = transactions.filter((transaction) => {
-    const search = transactionSearch.toLowerCase().trim();
+const filteredTransactions = transactions
+    .filter((transaction) => {
+        const search = transactionSearch.toLowerCase().trim();
 
-    const matchesSearch =
-        !search ||
-        transaction.category?.toLowerCase().includes(search) ||
-        transaction.description?.toLowerCase().includes(search);
+        const matchesSearch =
+            !search ||
+            transaction.category?.toLowerCase().includes(search) ||
+            transaction.description?.toLowerCase().includes(search);
 
-    const matchesType =
-        transactionTypeFilter === "all" ||
-        transaction.type === transactionTypeFilter;
+        const matchesType =
+            transactionTypeFilter === "all" ||
+            transaction.type === transactionTypeFilter;
 
-    const matchesCategory =
-        transactionCategoryFilter === "all" ||
-        transaction.category === transactionCategoryFilter;
+        const matchesCategory =
+            transactionCategoryFilter === "all" ||
+            transaction.category === transactionCategoryFilter;
 
-    return (
-        matchesSearch &&
-        matchesType &&
-        matchesCategory
-    );
-});
+        return (
+            matchesSearch &&
+            matchesType &&
+            matchesCategory
+        );
+    })
+    .sort((a, b) => {
+        if (transactionSort === "newest") {
+            return new Date(b.date) - new Date(a.date);
+        }
+
+        if (transactionSort === "oldest") {
+            return new Date(a.date) - new Date(b.date);
+        }
+
+        if (transactionSort === "highest") {
+            return Number(b.amount) - Number(a.amount);
+        }
+
+        if (transactionSort === "lowest") {
+            return Number(a.amount) - Number(b.amount);
+        }
+
+        return 0;
+    });
 
     // Scroll directly to the Edit Transaction form
     setTimeout(() => {
@@ -1619,7 +1640,7 @@ const filteredTransactions = transactions.filter((transaction) => {
               className="dashboard-welcome"
               style={{ marginTop: "24px" }}
             >
-              <div className="transaction-filters">
+       <div className="transaction-filters">
 
     <input
         type="text"
@@ -1644,18 +1665,27 @@ const filteredTransactions = transactions.filter((transaction) => {
         }
     >
         <option value="all">All Categories</option>
+        <option value="Salary">Salary</option>
+        <option value="Food">Food</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Travel">Travel</option>
+        <option value="Bills">Bills</option>
+        <option value="Rent">Rent</option>
+        <option value="Education">Education</option>
+        <option value="Healthcare">Healthcare</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Other">Other</option>
+    </select>
 
-      <option value="Salary">Salary</option>
-<option value="Food">Food</option>
-<option value="Shopping">Shopping</option>
-<option value="Travel">Travel</option>
-<option value="Bills">Bills</option>
-<option value="Rent">Rent</option>
-<option value="Education">Education</option>
-<option value="Healthcare">Healthcare</option>
-<option value="Entertainment">Entertainment</option>
-<option value="Other">Other</option>
-       </select>
+    <select
+        value={transactionSort}
+        onChange={(e) => setTransactionSort(e.target.value)}
+    >
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="highest">Highest Amount</option>
+        <option value="lowest">Lowest Amount</option>
+    </select>
 
     <button
         type="button"
@@ -1681,7 +1711,7 @@ const filteredTransactions = transactions.filter((transaction) => {
               >
                 {filteredTransactions.length === 0 && (
     <div className="no-transactions-found">
-        <div className="no-transactions-icon">🔍</div>
+     <div className="no-transactions-icon">🔍</div>
         <h3>No transactions found</h3>
         <p>Try changing your search or filters.</p>
     </div>

@@ -930,72 +930,86 @@ footer {
     font-size: 14px;
 }
   
+/* =========================
+   TRANSACTION FILTERS
+========================= */
 
 .transaction-filters {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) 170px 190px 170px 140px;
     gap: 14px;
     width: 100%;
+    max-width: 1100px;
+    margin: 22px auto 18px;
+    padding: 12px 14px;
     box-sizing: border-box;
     align-items: center;
-    justify-content: center;
-    margin: 22px auto 18px;
-    padding: 16px;
-    max-width: 1100px;
+
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;
     background: rgba(255, 255, 255, 0.035);
     backdrop-filter: blur(10px);
 }
 
-.transaction-filters input,
-.transaction-filters select {
+.transaction-filters input {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
     height: 44px;
     padding: 0 14px;
+    box-sizing: border-box;
+
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 10px;
     background: #111827;
     color: #f8fafc;
     font-size: 15px;
     outline: none;
-    transition: all 0.2s ease;
-}
-.transaction-filters input {
-    width: 280px;
-    flex-shrink: 0;
 }
 
 .transaction-filters select {
-    min-width: 170px;
-    width: 190px;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 44px;
+    padding: 0 12px;
+    box-sizing: border-box;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    background: #111827;
+    color: #f8fafc;
+    font-size: 15px;
+    outline: none;
     cursor: pointer;
-    flex-shrink: 0;
+    justify-self: stretch;
+}
+
+.transaction-filters input:focus,
+.transaction-filters select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .transaction-filters input::placeholder {
     color: #94a3b8;
 }
 
-.transaction-filters input:focus,
-.transaction-filters select:focus {
-
-    border-color: #3b82f6;
-
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-
-}
-
 .transaction-filters select option {
-
     background: #111827;
-
     color: #f8fafc;
-
 }
 
-/* Clear Filters Button */
-.clear-filters-btn {
+.transaction-filters .clear-filters-btn {
+    position: static !important;
+    width: 140px !important;
+    min-width: 140px !important;
+    max-width: 140px !important;
     height: 44px;
-    padding: 0 18px;
+    padding: 0 12px;
+    margin: 0;
+    box-sizing: border-box;
+
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.06);
@@ -1004,32 +1018,38 @@ footer {
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
-    transition: all 0.2s ease;
 }
 
-.clear-filters-btn:hover {
-    background: rgba(59, 130, 246, 0.15);
-    border-color: rgba(59, 130, 246, 0.5);
-    transform: translateY(-1px);
-}
-
-.clear-filters-btn:active {
-    transform: translateY(0);
-}
-
-/* Mobile */
-@media (max-width: 700px) {
+@media (max-width: 900px) {
     .transaction-filters {
-        flex-direction: column;
-        align-items: stretch;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .transaction-filters input {
+        grid-column: 1 / -1;
+    }
+
+    .transaction-filters .clear-filters-btn {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .transaction-filters {
+        grid-template-columns: 1fr;
+        width: calc(100% - 24px);
         margin: 18px 12px;
     }
 
     .transaction-filters input,
-    .transaction-filters select {
-        width: 100%;
-        min-width: 0;
-        box-sizing: border-box;
+    .transaction-filters select,
+    .transaction-filters .clear-filters-btn {
+        grid-column: auto;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
     }
 }
 /* =========================================================
