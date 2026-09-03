@@ -595,9 +595,9 @@ footer {
   }
 
   .dashboard-grid {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
 }
 
 @media (max-width: 700px) {
@@ -1117,4 +1117,34 @@ footer {
   border: 1px solid rgba(72, 214, 168, 0.45) !important;
   background: rgba(72, 214, 168, 0.08) !important;
   box-shadow: 0 0 18px rgba(72, 214, 168, 0.08);
+}
+/* =========================
+   ANALYTICS SUMMARY GRID
+   ========================= */
+
+.analytics-summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .analytics-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .analytics-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .analytics-summary-grid > div {
+    padding: 18px !important;
+  }
+
+  .analytics-summary-grid > div strong {
+    font-size: 22px !important;
+  }
 }

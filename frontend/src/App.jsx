@@ -74,18 +74,65 @@ function App() {
   const [creditInsights, setCreditInsights] = useState([]);
   const [creditScoreHistory, setCreditScoreHistory] = useState([]);
 
-    const scoreChartData = [...creditScoreHistory]
+      const recentScoreHistory = [...creditScoreHistory]
     .slice(0, 10)
-    .reverse()
-    .map((item) => ({
-      date: item.createdAt
-        ? new Date(item.createdAt).toLocaleDateString("en-IN", {
+    .reverse();
+
+  const scoreDateCounts = {};
+
+  recentScoreHistory.forEach((item) => {
+    if (!item.createdAt) return;
+
+    const dateKey = new Date(item.createdAt).toLocaleDateString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }
+    );
+
+    scoreDateCounts[dateKey] =
+      (scoreDateCounts[dateKey] || 0) + 1;
+  });
+
+  const scoreChartData = recentScoreHistory.map((item) => {
+    if (!item.createdAt) {
+      return {
+        date: "Recent",
+        score: Number(item.score) || 0,
+      };
+    }
+
+    const date = new Date(item.createdAt);
+
+    const dateKey = date.toLocaleDateString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }
+    );
+
+    const hasDuplicateDate = scoreDateCounts[dateKey] > 1;
+
+    return {
+      date: hasDuplicateDate
+        ? date.toLocaleString("en-IN", {
             day: "2-digit",
             month: "short",
+            hour: "2-digit",
+            minute: "2-digit",
           })
-        : "Recent",
+        : date.toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+          }),
+
       score: Number(item.score) || 0,
-    }));
+    };
+  });
 
 
   const latestScore =
@@ -910,15 +957,15 @@ const filteredTransactions = transactions
           {/* =========================
               FINANCIAL ANALYTICS
           ========================= */}
-          <section
-            style={{
-              marginTop: "28px",
-              display: "grid",
-              gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-              gap: "16px",
-              width: "100%",
-            }}
-          >
+                      <section
+              className="analytics-summary-grid"
+              style={{
+                marginTop: "28px",
+                display: "grid",
+                gap: "16px",
+                width: "100%",
+              }}
+            >
             <div
               style={{
                 padding: "20px",
@@ -1470,7 +1517,24 @@ const filteredTransactions = transactions
                             }}
                           />
                         </div>
-                                      <div
+                      </div>
+
+                      <span
+                        style={{
+                          fontSize: "13px",
+                          opacity: 0.6,
+                        }}
+                      >
+                        #{index + 1}
+                      </span>
+                    </div>
+                  );
+                })}
+                            </div>
+
+              {/* SCORE TREND CHART */}
+
+              <div
                 style={{
                   marginTop: "24px",
                   padding: "20px",
@@ -1479,11 +1543,7 @@ const filteredTransactions = transactions
                   border: "1px solid rgba(255,255,255,0.08)",
                 }}
               >
-                <div
-                  style={{
-                    marginBottom: "16px",
-                  }}
-                >
+                <div style={{ marginBottom: "16px" }}>
                   <strong style={{ fontSize: "16px" }}>
                     📈 Score Trend
                   </strong>
@@ -1513,12 +1573,14 @@ const filteredTransactions = transactions
                       strokeDasharray="3 3"
                       stroke="rgba(255,255,255,0.08)"
                     />
-
-                    <XAxis
-                      dataKey="date"
-                      stroke="rgba(255,255,255,0.55)"
-                      tick={{ fontSize: 12 }}
-                    />
+                <XAxis
+                  dataKey="date"
+                  stroke="rgba(255,255,255,0.55)"
+                  tick={{ fontSize: 11 }}
+                  tickLine={false}
+                  axisLine={{ stroke: "rgba(255,255,255,0.25)" }}
+                  interval="preserveStartEnd"
+                />
 
                     <YAxis
                       domain={["dataMin - 20", "dataMax + 20"]}
@@ -1547,20 +1609,7 @@ const filteredTransactions = transactions
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-                      </div>
 
-                      <span
-                        style={{
-                          fontSize: "13px",
-                          opacity: 0.6,
-                        }}
-                      >
-                        #{index + 1}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
             </section>
           )}
 
