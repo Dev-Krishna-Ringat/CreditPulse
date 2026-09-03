@@ -1109,3 +1109,12 @@ footer {
   font-size: 17px;
   white-space: nowrap;
 }
+/* =========================
+   LATEST CREDIT SCORE
+   ========================= */
+
+.latest-score-record {
+  border: 1px solid rgba(72, 214, 168, 0.45) !important;
+  background: rgba(72, 214, 168, 0.08) !important;
+  box-shadow: 0 0 18px rgba(72, 214, 168, 0.08);
+}

@@ -1,4 +1,13 @@
 import { useEffect, useState } from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import "./App.css";
 
 const API_URL = "http://localhost:5000/api";
@@ -65,6 +74,37 @@ function App() {
   const [creditInsights, setCreditInsights] = useState([]);
   const [creditScoreHistory, setCreditScoreHistory] = useState([]);
 
+    const scoreChartData = [...creditScoreHistory]
+    .slice(0, 10)
+    .reverse()
+    .map((item) => ({
+      date: item.createdAt
+        ? new Date(item.createdAt).toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+          })
+        : "Recent",
+      score: Number(item.score) || 0,
+    }));
+
+
+  const latestScore =
+  Number(creditScoreHistory[0]?.score) || 0;
+
+const previousScore =
+  Number(creditScoreHistory[1]?.score) || 0;
+
+const scoreChange =
+  creditScoreHistory.length > 1
+    ? latestScore - previousScore
+    : 0;
+
+const scoreTrend =
+  scoreChange > 0
+    ? "Improving"
+    : scoreChange < 0
+    ? "Declining"
+    : "Stable";
   // =========================
   // FINANCIAL ANALYTICS
   // =========================
@@ -926,7 +966,7 @@ const filteredTransactions = transactions
                 Current Balance
               </p>
               <strong style={{ fontSize: "24px" }}>
-                ₹{Number(analytics.balance).toLocaleString("en-IN")}
+               ₹{Number(analytics.balance).toLocaleString("en-IN")}
               </strong>
             </div>
 
@@ -1145,8 +1185,7 @@ const filteredTransactions = transactions
                           >
                             <span>Income</span>
                             <span>
-                              ₹
-                              {Number(data.income || 0).toLocaleString(
+                              ₹{Number(data.income || 0).toLocaleString(
                                 "en-IN"
                               )}
                             </span>
@@ -1183,8 +1222,7 @@ const filteredTransactions = transactions
                           >
                             <span>Expense</span>
                             <span>
-                              ₹
-                              {Number(data.expense || 0).toLocaleString(
+                             ₹{Number(data.expense || 0).toLocaleString(
                                 "en-IN"
                               )}
                             </span>
@@ -1247,6 +1285,86 @@ const filteredTransactions = transactions
                   <p style={{ margin: 0, opacity: 0.75 }}>
                     Track how your CreditPulse score changes over time.
                   </p>
+                  <div
+  style={{
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "10px",
+    marginTop: "12px",
+  }}
+>
+  <span
+    style={{
+      padding: "8px 12px",
+      borderRadius: "10px",
+      background: "rgba(52, 120, 246, 0.12)",
+      border: "1px solid rgba(52, 120, 246, 0.22)",
+      fontSize: "13px",
+    }}
+  >
+    Current: <strong>{latestScore}</strong>
+  </span>
+
+  <span
+    style={{
+      padding: "8px 12px",
+      borderRadius: "10px",
+      background: "rgba(255,255,255,0.05)",
+      border: "1px solid rgba(255,255,255,0.08)",
+      fontSize: "13px",
+    }}
+  >
+    Previous: <strong>{previousScore}</strong>
+  </span>
+
+  <span
+    style={{
+      padding: "8px 12px",
+      borderRadius: "10px",
+      background:
+        scoreChange > 0
+          ? "rgba(34,197,94,0.12)"
+          : scoreChange < 0
+          ? "rgba(239,68,68,0.12)"
+          : "rgba(255,255,255,0.05)",
+      border:
+        scoreChange > 0
+          ? "1px solid rgba(34,197,94,0.22)"
+          : scoreChange < 0
+          ? "1px solid rgba(239,68,68,0.22)"
+          : "1px solid rgba(255,255,255,0.08)",
+      fontSize: "13px",
+    }}
+  >
+    Change:{" "}
+    <strong>
+      {scoreChange > 0 ? "+" : ""}
+      {scoreChange}
+    </strong>
+  </span>
+
+  <span
+    style={{
+      padding: "8px 12px",
+      borderRadius: "10px",
+      background:
+        scoreTrend === "Improving"
+          ? "rgba(34,197,94,0.12)"
+          : scoreTrend === "Declining"
+          ? "rgba(239,68,68,0.12)"
+          : "rgba(255,255,255,0.05)",
+      border:
+        scoreTrend === "Improving"
+          ? "1px solid rgba(34,197,94,0.22)"
+          : scoreTrend === "Declining"
+          ? "1px solid rgba(239,68,68,0.22)"
+          : "1px solid rgba(255,255,255,0.08)",
+      fontSize: "13px",
+    }}
+  >
+    Trend: <strong>{scoreTrend}</strong>
+  </span>
+</div>
                 </div>
 
                 <div
@@ -1275,6 +1393,7 @@ const filteredTransactions = transactions
                   return (
                     <div
                       key={item._id || index}
+                      className={index === 0 ? "latest-score-record" : ""}
                       style={{
                         display: "grid",
                         gridTemplateColumns: "80px 1fr auto",
@@ -1351,6 +1470,83 @@ const filteredTransactions = transactions
                             }}
                           />
                         </div>
+                                      <div
+                style={{
+                  marginTop: "24px",
+                  padding: "20px",
+                  borderRadius: "16px",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                }}
+              >
+                <div
+                  style={{
+                    marginBottom: "16px",
+                  }}
+                >
+                  <strong style={{ fontSize: "16px" }}>
+                    📈 Score Trend
+                  </strong>
+
+                  <p
+                    style={{
+                      margin: "5px 0 0",
+                      fontSize: "13px",
+                      opacity: 0.65,
+                    }}
+                  >
+                    Your credit score movement over the last 10 records.
+                  </p>
+                </div>
+
+                <ResponsiveContainer width="100%" height={280}>
+                  <LineChart
+                    data={scoreChartData}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: 0,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="rgba(255,255,255,0.08)"
+                    />
+
+                    <XAxis
+                      dataKey="date"
+                      stroke="rgba(255,255,255,0.55)"
+                      tick={{ fontSize: 12 }}
+                    />
+
+                    <YAxis
+                      domain={["dataMin - 20", "dataMax + 20"]}
+                      stroke="rgba(255,255,255,0.55)"
+                      tick={{ fontSize: 12 }}
+                    />
+
+                    <Tooltip
+                      contentStyle={{
+                        background: "#142341",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                        borderRadius: "10px",
+                        color: "#fff",
+                      }}
+                      formatter={(value) => [`${value}`, "Score"]}
+                    />
+
+                    <Line
+                      type="monotone"
+                      dataKey="score"
+                      stroke="#48d6a8"
+                      strokeWidth={3}
+                      dot={{ r: 4 }}
+                      activeDot={{ r: 6 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
                       </div>
 
                       <span
